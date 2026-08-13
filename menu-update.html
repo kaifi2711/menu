@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rustic Spoon | Menu</title>
+    
+    <style>
+        /* Color Palette and Variables */
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f9f9f9;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Navigation & Buttons */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Menu Grid Layout */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Individual Menu Cards */
+        .menu-item {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 1rem;
+            border-bottom: 2px dotted #eaeaea;
+            padding-bottom: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        .item-desc {
+            color: #666;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The Rustic Spoon</h1>
+        <p>Fresh, local, and delicious.</p>
+    </header>
+    
+    <nav>
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="appetizers">Appetizers</button>
+        <button class="filter-btn" data-category="mains">Mains</button>
+        <button class="filter-btn" data-category="desserts">Desserts</button>
+    </nav>
+
+    <main class="menu-container" id="menu-container">
+        </main>
+
+    <script>
+        // The Data: An array of our menu items
+        const menuData = [
+            { id: 1, title: "Bruschetta", category: "appetizers", price: "$8.99", desc: "Grilled artisan bread topped with fresh tomatoes, basil, and garlic olive oil." },
+            { id: 2, title: "Cripy Pav", category: "appetizers", price: "₹70", desc: "Lightly breaded and fried squid rings served with a side of zesty marinara." },
+            { id: 3, title: "Grilled Salmon", category: "mains", price: "$24.99", desc: "Wild-caught Atlantic salmon served with roasted asparagus and a lemon butter sauce." },
+            { id: 4, title: "Truffle Pasta", category: "mains", price: "$19.99", desc: "Handmade fettuccine tossed in a rich, creamy black truffle sauce with parmesan." },
+            { id: 5, title: "Ribeye Steak", category: "mains", price: "$32.99", desc: "12oz grass-fed beef cooked to order, served with garlic mashed potatoes." },
+            { id: 6, title: "Classic Tiramisu", category: "desserts", price: "$7.99", desc: "Layers of espresso-soaked ladyfingers and smooth mascarpone cream." },
+            { id: 7, title: "NY Cheesecake", category: "desserts", price: "$8.99", desc: "Rich and creamy New York style cheesecake with a fresh strawberry compote." }
+        ];
+
+        // Select the necessary HTML elements
+        const menuContainer = document.getElementById('menu-container');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        // Function to map through the data array and display the items on the page
+        function displayMenuItems(menuItems) {
+            let displayMenu = menuItems.map(function(item) {
+                return `
+                <article class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-title">${item.title}</h3>
+                        <span class="item-price">${item.price}</span>
+                    </div>
+                    <p class="item-desc">${item.desc}</p>
+                </article>`;
+            });
+            
+            // Join the array into a single string of HTML and inject it
+            displayMenu = displayMenu.join("");
+            menuContainer.innerHTML = displayMenu;
+        }
+
+        // Event Listener: Load all items when the page first opens
+        window.addEventListener('DOMContentLoaded', () => {
+            displayMenuItems(menuData);
+        });
+
+        // Event Listener: Handle the category filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Get the category from the clicked button (e.g., "mains")
+                const category = e.currentTarget.dataset.category;
+                
+                // Remove the 'active' class from all buttons, then add it to the clicked one
+                filterBtns.forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+
+                // Filter the array based on the category
+                const menuCategory = menuData.filter(item => {
+                    if (item.category === category) {
+                        return item;
+                    }
+                });
+
+                // Display all items if "all" is clicked, otherwise display the filtered array
+                if (category === 'all') {
+                    displayMenuItems(menuData);
+                } else {
+                    displayMenuItems(menuCategory);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
